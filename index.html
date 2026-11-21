@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Birrias | Menú Digital y Reseñas</title>
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --card: #1a1a1a;
+      --red: #d91c1c;
+      --red-dark: #a61111;
+      --gold: #f5b942;
+      --text: #f5f5f5;
+      --muted: #b3b3b3;
+      --border: #2e2e2e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 40px;
+    }
+
+    /* Encabezado */
+    header {
+      background: linear-gradient(180deg, #2a0606 0%, var(--bg) 100%);
+      border-bottom: 2px solid var(--red);
+      padding: 24px 16px 20px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--red);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* Botones de Acción (Google Maps) */
+    .actions {
+      max-width: 600px;
+      margin: 18px auto 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 13px 12px;
+      border-radius: 10px;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-review {
+      background: var(--gold);
+      color: #111;
+      box-shadow: 0 4px 14px rgba(245, 185, 66, 0.25);
+    }
+
+    .btn-maps {
+      background: var(--card);
+      color: #fff;
+      border: 1px solid var(--border);
+    }
+
+    /* Navegación rápida */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(15, 15, 15, 0.95);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      overflow-x: auto;
+      gap: 8px;
+      padding: 10px 14px;
+      scrollbar-width: none;
+    }
+
+    nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+
+    nav a:hover, nav a:focus {
+      background: var(--red);
+      color: #fff;
+      border-color: var(--red);
+    }
+
+    /* Contenedor principal */
+    main {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    section {
+      margin-bottom: 28px;
+      scroll-margin-top: 58px;
+    }
+
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      border-left: 4px solid var(--red);
+      padding-left: 10px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    /* Lista estándar de platillos */
+    .menu-list {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-name {
+      font-weight: 600;
+      font-size: 0.98rem;
+    }
+
+    .item-desc {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .item-price {
+      font-weight: 800;
+      color: var(--gold);
+      font-size: 1.05rem;
+      margin-left: 12px;
+      white-space: nowrap;
+    }
+
+    /* Tarjetas de Paquetes */
+    .package-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .package-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .package-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #ff4d4d;
+      text-transform: uppercase;
+    }
+
+    .package-price {
+      background: var(--red);
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.1rem;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    .package-includes {
+      font-size: 0.88rem;
+      color: #ddd;
+      margin-bottom: 10px;
+    }
+
+    .package-extra {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: #2b1212;
+      color: #ff8585;
+      border: 1px solid #5c1c1c;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    /* Banner Tacos */
+    .tacos-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .tacos-prices {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .price-pill {
+      flex: 1;
+      background: #252525;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .price-pill span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .price-pill strong {
+      font-size: 1.15rem;
+      color: var(--gold);
+    }
+
+    .tacos-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      font-size: 0.92rem;
+    }
+
+    .tacos-grid div {
+      background: #141414;
+      padding: 7px 10px;
+      border-radius: 6px;
+      border: 1px solid #242424;
+    }
+
+    .notice {
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #ff8585;
+      background: #240c0c;
+      border: 1px solid #4d1616;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    /* Tarjeta de Ubicación y Reseñas */
+    .location-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .location-card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+    }
+
+    .location-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 28px;
+      padding: 0 16px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="badge">La Mejor Birria de Zumpango</span>
+    <h1>El Birrias</h1>
+    <p>Menú Digital • Servicio a Domicilio</p>
+
+    <div class="actions">
+      <a class="btn btn-review" href="https://search.google.com/local/writereview?placeid=ChIJi88BrRqN0YURPsYmE5Nf0Ek" target="_blank" rel="noopener">
+        ⭐ Recomiéndanos
+      </a>
+      <a class="btn btn-maps" href="https://maps.app.goo.gl/goqJUjD2VuFM2LNv6" target="_blank" rel="noopener">
+        📍 Cómo llegar
+      </a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="#especialidades">Especialidades</a>
+    <a href="#paquetes">Paquetes</a>
+    <a href="#tacos">Tacos</a>
+    <a href="#consome">Consomé</a>
+    <a href="#bebidas">Bebidas</a>
+    <a href="#ubicacion">Ubicación</a>
+  </nav>
+
+  <main>
+    <!-- ESPECIALIDADES -->
+    <section id="especialidades">
+      <h2 class="section-title">Especialidades</h2>
+      <div class="menu-list">
+        <div class="menu-item">
+          <div class="item-name">Cazuela de Birria <span class="item-desc">200 gr. de Birria</span></div>
+          <div class="item-price">$112</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Quesabirria</div>
+          <div class="item-price">$37</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Doraditos</div>
+          <div class="item-price">$35</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Costrabirria</div>
+          <div class="item-price">$67</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Burrito de Birria</div>
+          <div class="item-price">$97</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Sincrobirria</div>
+          <div class="item-price">$67</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Crepabirria</div>
+          <div class="item-price">$97</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Tortugabirria</div>
+          <div class="item-price">$67</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Maruchabirria</div>
+          <div class="item-price">$112</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Volcán</div>
+          <div class="item-price">$47</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Quesadillón</div>
+          <div class="item-price">$97</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAQUETES -->
+    <section id="paquetes">
+      <h2 class="section-title">Paquetes</h2>
+
+      <div class="package-card">
+        <div class="package-header">
+          <span class="package-title">Birria 4 Personas</span>
+          <span class="package-price">$330</span>
+        </div>
+        <p class="package-includes">500 gr. de Birria, consomé, cebolla asada, nopales asados, chiles asados, salsa y limón.</p>
+        <span class="package-extra">EXTRA C/Queso $37</span>
+      </div>
+
+      <div class="package-card">
+        <div class="package-header">
+          <span class="package-title">Birria 6 Personas</span>
+          <span class="package-price">$560</span>
+        </div>
+        <p class="package-includes">900 gr. de Birria, consomé, cebolla asada, nopales asados, chiles asados, salsa y limón.</p>
+        <span class="package-extra">EXTRA C/Queso $37</span>
+      </div>
+
+      <div class="package-card">
+        <div class="package-header">
+          <span class="package-title">Asada 4 Personas</span>
+          <span class="package-price">$360</span>
+        </div>
+        <p class="package-includes">500 gr. de carne (arrachera, chistorra, chorizo argentino, longaniza y bistec), birria, consomé, cebolla asada, chiles asados, salsa y limón.</p>
+        <span class="package-extra">EXTRA C/Queso $37</span>
+      </div>
+
+      <div class="package-card">
+        <div class="package-header">
+          <span class="package-title">Asada 6 Personas</span>
+          <span class="package-price">$590</span>
+        </div>
+        <p class="package-includes">900 gr. de carne (arrachera, chistorra, chorizo argentino, longaniza y bistec), birria, consomé, cebolla asada, chiles asados, salsa y limón.</p>
+        <span class="package-extra">EXTRA C/Queso $37</span>
+      </div>
+    </section>
+
+    <!-- TACOS -->
+    <section id="tacos">
+      <h2 class="section-title">Tacos</h2>
+      <div class="tacos-box">
+        <div class="tacos-prices">
+          <div class="price-pill">
+            <span>Taco sencillo</span>
+            <strong>$32</strong>
+          </div>
+          <div class="price-pill">
+            <span>Con queso</span>
+            <strong>$37</strong>
+          </div>
+        </div>
+        <div class="tacos-grid">
+          <div>• Birria</div>
+          <div>• Barriga</div>
+          <div>• Bistec</div>
+          <div>• Costilla</div>
+          <div>• Longaniza</div>
+          <div>• Tripa</div>
+          <div>• Chistorra</div>
+          <div>• Arrachera</div>
+          <div>• Suadero</div>
+          <div>• Chorizo Argentino</div>
+          <div>• Chuleta</div>
+          <div>• Aguja</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONSOMÉ -->
+    <section id="consome">
+      <h2 class="section-title">Consomé</h2>
+      <div class="menu-list">
+        <div class="menu-item">
+          <div class="item-name">Chico (1/4 L)</div>
+          <div class="item-price">$17</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Mediano (1/2 L)</div>
+          <div class="item-price">$27</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Grande (1 L)</div>
+          <div class="item-price">$37</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEBIDAS -->
+    <section id="bebidas">
+      <h2 class="section-title">Bebidas</h2>
+      <div class="menu-list">
+        <div class="menu-item">
+          <div class="item-name">Refresco</div>
+          <div class="item-price">$30</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Refresco 2 Lt.</div>
+          <div class="item-price">$57</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Agua Sabor 1 Lt.</div>
+          <div class="item-price">$37</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Cerveza</div>
+          <div class="item-price">$37</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Caguamón</div>
+          <div class="item-price">$97</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">Café</div>
+          <div class="item-price">$27</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UBICACIÓN Y RESEÑAS -->
+    <section id="ubicacion">
+      <h2 class="section-title">Ubicación y Reseñas</h2>
+      <div class="location-card">
+        <p><strong>Zumpango, Estado de México</strong><br />Abre la ubicación en Google Maps para ver la ruta exacta o déjanos tu calificación.</p>
+        <div class="location-actions">
+          <a class="btn btn-review" href="https://search.google.com/local/writereview?placeid=ChIJi88BrRqN0YURPsYmE5Nf0Ek" target="_blank" rel="noopener">
+            ⭐ Dejar Reseña
+          </a>
+          <a class="btn btn-maps" href="https://maps.app.goo.gl/goqJUjD2VuFM2LNv6" target="_blank" rel="noopener">
+            📍 Ver en Maps
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="notice">
+      EL ENVÍO SE COBRA POR SEPARADO
+    </div>
+  </main>
+
+  <footer>
+    ¿Te gustó nuestra birria? Toca <strong>"⭐ Recomiéndanos"</strong> arriba para dejarnos tu reseña en Google Maps.
+  </footer>
+
+</body>
+</html>
